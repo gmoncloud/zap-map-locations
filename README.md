@@ -7,60 +7,114 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Zap-Map Technical Challenge
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Develop a single restful API endpoint which should return Location points for a region on a map.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Create a database and migrate the data from that file
+- There only needs to be a single endpoint.
+- That endpoint should accept three parameters:
+  - latitude
+  - longitude
+  - radius
+- It should return a response of all Locations that fall within that radius.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This simple project is running in `php8.2`
 
-## Learning Laravel
+## Setup
+1. Pull the `main` branch
+2. Run `composer install`
+3. Make sure you set up your database in `.env` file
+4. Run the migration `php artisan migrate` (database/migrations/2023_04_06_101801_create_locations_table.php)
+5. Run the seeder: `php artisan db:seed --class=LocationSeeder` which is located in database/seeders/LocationSeeder.php
+6. Voilà! you are all set.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## How to use the endpoint?
+This contains a single endpoint, below is the detail. Make sure that you will change the domain according to your setup.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+GET https://laraboxe.local/api/locations?lat=51.475603934275675&lon=-2.3807167145198114&radius=6
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+You can also use the postman collection for your reference:
+https://api.postman.com/collections/20811097-f78e1f61-9fd2-4f12-8207-ae1e0988fbd7?access_key=PMAT-01GXGTW846JX0XK75XPBWZMWME
 
-## Laravel Sponsors
+Endpoint name: locations
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Required Parameters:
+- lat (51.475603934275675)
+- lon (-2.3807167145198114)
+- radius (10)
 
-### Premium Partners
+Successful Response:
+```json
+{
+    "locations": [
+        {
+            "id": 1,
+            "name": "Toyota Taunton",
+            "latitude": "51.47560393",
+            "longitude": "-2.38071671",
+            "distance": 0
+        },
+        {
+            "id": 194,
+            "name": "Balnellan Road Car Park",
+            "latitude": "51.49157162",
+            "longitude": "-2.45921125",
+            "distance": 5.718032674693054
+        },
+        {
+            "id": 45,
+            "name": "Warwick Avenue (North Bound)",
+            "latitude": "51.51463999",
+            "longitude": "-2.46010010",
+            "distance": 7.002991765705255
+        },
+        {
+            "id": 103,
+            "name": "Greenstone Pub & Restaurant",
+            "latitude": "51.53201065",
+            "longitude": "-2.29918018",
+            "distance": 8.437364043107253
+        },
+        {
+            "id": 55,
+            "name": "Etchinghill Golf Club",
+            "latitude": "51.48544745",
+            "longitude": "-2.25066393",
+            "distance": 9.072428033163439
+        },
+        {
+            "id": 128,
+            "name": "1 Clifton Avenue",
+            "latitude": "51.51574403",
+            "longitude": "-2.25564252",
+            "distance": 9.741231115390512
+        }
+    ],
+    "status": "success",
+    "title": "Success",
+    "success": true
+}
+```
+Validated Response:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```json
+{
+    "title": "Error",
+    "success": false,
+    "message": "Validation errors",
+    "data": {
+        "lat": [
+            "The latitude field is required"
+        ],
+        "lon": [
+            "The longitude field is required"
+        ],
+        "radius": [
+            "The radius field is required."
+        ]
+    }
+}
+```
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+I created a simple test in (tests/Feature/LocationTest.php). Please run `php artisan test` to run it.
